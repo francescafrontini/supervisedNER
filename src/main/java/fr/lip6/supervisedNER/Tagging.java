@@ -32,7 +32,7 @@ import opennlp.tools.util.featuregen.WindowFeatureGenerator;
  */
 public class Tagging {
 
-	public static void taggingNER(String model, String file) {
+	public static void taggingNER(String dico, String model, String file) {
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
@@ -48,7 +48,7 @@ public class Tagging {
 			}
 			String[] wL = {};
 			wL = words.toArray(wL);
-			Span nameSpans[] = statNamedEntityFinder(wL, model);
+			Span nameSpans[] = statNamedEntityFinder(dico, wL, model);
 			System.out.println("Result produced by the STATISTICAL model\n");
 			System.out.println("offset\tform");
 			for (int i = 0; i < nameSpans.length; i++) {
@@ -67,11 +67,11 @@ public class Tagging {
 		}
 	}
 
-	public static Span[] statNamedEntityFinder(String[] sentence, String modelL) {
+	public static Span[] statNamedEntityFinder(String dico, String[] sentence, String modelL) {
 
 		try {
 			InputStream dictFileIn = new FileInputStream(
-					"dictionary/dictionary.xml");
+					dico);
 			Dictionary dictIn = new Dictionary(dictFileIn);
 			AdaptiveFeatureGenerator featureGenerator = new CachedFeatureGenerator(
 					new AdaptiveFeatureGenerator[] {

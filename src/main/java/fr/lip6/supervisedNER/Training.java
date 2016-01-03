@@ -1,9 +1,13 @@
 package fr.lip6.supervisedNER;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -37,11 +41,10 @@ import opennlp.tools.util.featuregen.WindowFeatureGenerator;
  */
 public class Training {
 
-	public static void trainingNER(String file) {
+	public static void trainingNER(String dico, String file) {
 
 		try {
-			InputStream dictFileIn = new FileInputStream(
-					"dictionary/dictionary.xml");
+			InputStream dictFileIn = new FileInputStream(dico);
 
 			Dictionary dictIn = new Dictionary(dictFileIn);
 
@@ -90,4 +93,50 @@ public class Training {
 
 	}
 
+	/**
+     * Reads TEI file with NE annotations, 
+     * strips out XML tags except NE annotations and
+     * creates new file in compliance with OpenNLP format and .opennlp extension.
+     * This is used during the training phase which takes as input a TEI file. 
+     */
+    public static String tei2OpenNLP(String teifile, String neType) {    	
+    	try {
+    		BufferedWriter out = new BufferedWriter(new FileWriter(teifile.replace(".xml", ".opennlp")));
+			BufferedReader br = new BufferedReader(new FileReader(teifile));
+			String line;
+			while ( (line=br.readLine()) != null) {
+	        	if (neType.equals("person") || neType.equals("all")) {
+	        		line = line.replaceAll("\\<persName.*?>", "\\<START:person> ");
+	        		line = line.replaceAll("\\</persName>", " \\<END>");
+	        	} 
+	        	if (neType.equals("place") || neType.equals("all")) {
+	        		line = line.replaceAll("\\<placeName.*?>", "\\<START:place> ");
+		        	line = line.replaceAll("\\</placeName>", " \\<END>");	
+	        	}
+	        	if (neType.equals("organization") || neType.equals("all")) {
+		        		line = line.replaceAll("\\<orgName.*?>", "\\<START:organization> ");
+			        	line = line.replaceAll("\\</orgName>", " \\<END>");	
+		        } 
+	        	line = line.replaceAll("\\</?(?!(?:START:person|START:place|START:organization|END)\b)[a-z]+(?:[^>\\\"']|\\\"[^\\\"]*\\\"|'[^']*')*>", "");
+	        	line = line.replaceAll("\\.", " .");
+	        	line = line.replaceAll(",", " ,");
+	        	line = line.replaceAll("’", "’ ");
+	        	line = line.replaceAll("'", "' ");
+	        	line = line.replaceAll("\\\"", " \\\"");
+	        	line = line.replaceAll("\\(", " \\( ");
+	        	line = line.replaceAll("\\)", " \\ )");
+	        	if (!line.equals("")) {
+		        	out.append(line + System.lineSeparator());
+	        	}	        	
+	        }	        
+	        br.close();
+	        out.close();
+		} catch (FileNotFoundException e) {		
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}        
+    	return teifile.replace(".xml", ".opennlp");
+    }
+    
 }
