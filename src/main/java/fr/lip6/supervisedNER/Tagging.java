@@ -1,12 +1,16 @@
 package fr.lip6.supervisedNER;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import opennlp.tools.dictionary.Dictionary;
 import opennlp.tools.namefind.NameFinderME;
@@ -32,7 +36,7 @@ import opennlp.tools.util.featuregen.WindowFeatureGenerator;
  */
 public class Tagging {
 
-	public static void taggingNER(String dico, String model, String openNLPfile, String teifile) {
+	public static void taggingNER(String dico, String model, String openNLPfile, String teifile, String typeNE) {
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(openNLPfile));
@@ -50,6 +54,7 @@ public class Tagging {
 			Span nameSpans[] = statNamedEntityFinder(dico, wL, model);
 			System.out.println("Result produced by the STATISTICAL model\n");
 			System.out.println("offset\tform");
+			Set<String> mentions = new HashSet<String>();
 			for (int i = 0; i < nameSpans.length; i++) {
 				String offset = nameSpans[i].getStart() + " "
 						+ nameSpans[i].getEnd();
@@ -58,9 +63,31 @@ public class Tagging {
 					mention += wL[j];
 				}
 				offset += "\t" + mention;
-				System.out.println(offset); //TODO inject annotations into TEI (teifile) but how?
+				mentions.add(mention);
+				System.out.println(offset);				
 			}
 			br.close();
+			// inject annotations into TEI 
+			// perform substitutions per NE mention along the whole file (brute force..)
+			String neTag = "";
+			if (typeNE.equals("place")) {
+				neTag = "placeName";
+			} else if (typeNE.equals("person")) {
+				neTag = "persName";
+			} else if (typeNE.equals("organization")) {
+				neTag = "orgName";
+			}
+			BufferedWriter brWriteTEI = new BufferedWriter(new FileWriter(teifile.replace(".xml", "-out.xml")));
+			BufferedReader brReadTEI = new BufferedReader(new FileReader(teifile));
+			while((input = brReadTEI.readLine()) != null) {
+				for (String m : mentions) {
+					input = input.replaceAll(m, "<"+neTag+">"+m+"</"+neTag+">");
+					//TODO as expected, this is not working properly, overlapping issues
+				}
+				brWriteTEI.write(input + System.lineSeparator());
+			}
+			brReadTEI.close();
+			brWriteTEI.close();
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
