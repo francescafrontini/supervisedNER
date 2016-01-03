@@ -32,15 +32,14 @@ import opennlp.tools.util.featuregen.WindowFeatureGenerator;
  */
 public class Tagging {
 
-	public static void taggingNER(String dico, String model, String file) {
+	public static void taggingNER(String dico, String model, String openNLPfile, String teifile) {
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			BufferedReader br = new BufferedReader(new FileReader(openNLPfile));
 			String input;
-			//TODO call tokenise.pl de TreeTagger pour être sure que la tokenisation est bien faite
+			//TODO call tokenise.pl de TreeTagger pour être sure que la tokenisation est bien faite (?)
 			List<String> words = new ArrayList<String>();
 			while ((input = br.readLine()) != null) {
-				//sentence.add(input);
 				String[] ws = input.split(" ");
 				for (String w : ws) {
 					words.add(w);
@@ -59,7 +58,7 @@ public class Tagging {
 					mention += wL[j];
 				}
 				offset += "\t" + mention;
-				System.out.println(offset);
+				System.out.println(offset); //TODO inject annotations into TEI (teifile) but how?
 			}
 			br.close();
 		} catch (IOException io) {
