@@ -1,6 +1,6 @@
-Main class to launch supervised NER is App.java
+Main class to launch supervised NER is App.java or launch the runnable jar file supervisedNED.jar. If you choose to used runnable jar, you just need to have Java installed in your local machine and launch the runnable jar file via the command line using the command java -jar supervisedNED.jar
 
-Two forms of execution are possible:
+In both cases, arguments are explained below:
 
 1) train dictionary.xml TEIfile-NEannot.xml place|person|organization|all
 (it outputs a .mod file).
