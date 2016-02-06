@@ -1,0 +1,64 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf340
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ***TAG issues***\
+\
+1) <placeName><placeName>Roma</placeName>nos</placeName>\
+\
+> demonym contains toponym\
+correct is\
+\
+Romanos\
+(no tag)\
+\
+2) <placeName><placeName>Roma</placeName>e</placeName>\
+\
+> nominative contains inflected form\
+correct is \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 <placeName>Romae</placeName>\
+\
+\
+3) <placeName><placeName>Italia</placeName>que</placeName>\
+\
+> enclitic is present\
+\
+<placeName><placeName>Italia</placeName>que</placeName>\
+this tagging is correct!!!\
+\
+\
+4) <placeName><placeName>Italia</placeName>eque</placeName>\
+\
+> case 2) and 3) combined!\
+\
+correct is \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 <placeName><placeName>Italiae</placeName>que</placeName>\
+\
+\
+\
+Possible(partial) solution:\
+\
+enclitics =  a list of enclitics, that have to be separated (-que, -ne, -ue, -ce, -met, -dum, -cum) \
+demonym_inflection = a list of derivational morphemes indicative of demonyms (n,c)\
+examples\
+Italiaque\
+Romanus\
+Syriaca\
+\
+general rule: when projecting the annotations to the TEI, always include characters that are attached.\
+Add each consecutive character until\
+- next is non character (punctuation, whitespace, number \'85)\
+- what is left until the first non character is an enclitic\
+- next character is \'93n\'94\
+ \
+\
+\
+***TRAIN improvements***\
+\
+- add the possibility of passing a folder to the training, containing more than one TEI, to be combined in one training set\
+}
