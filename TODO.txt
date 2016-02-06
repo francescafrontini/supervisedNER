@@ -1,0 +1,55 @@
+***TAG issues***
+
+1) <placeName><placeName>Roma</placeName>nos</placeName>
+
+> demonym contains toponym
+correct is
+
+Romanos
+(no tag)
+
+2) <placeName><placeName>Roma</placeName>e</placeName>
+
+> nominative contains inflected form
+correct is 
+
+<placeName>Romae</placeName>
+
+
+3) <placeName><placeName>Italia</placeName>que</placeName>
+
+> enclitic is present
+
+<placeName><placeName>Italia</placeName>que</placeName>
+this tagging is correct!!!
+
+
+4) <placeName><placeName>Italia</placeName>eque</placeName>
+
+> case 2) and 3) combined!
+
+correct is 
+<placeName><placeName>Italiae</placeName>que</placeName>
+
+
+
+Possible(partial) solution:
+
+enclitics =  a list of enclitics, that have to be separated (-que, -ne, -ue, -ce, -met, -dum, -cum) 
+demonym_inflection = a list of derivational morphemes indicative of demonyms (n,c)
+examples
+Italiaque
+Romanus
+Syriaca
+
+general rule: when projecting the annotations to the TEI, always include characters that are attached.
+Add each consecutive character until
+- next is non character (punctuation, whitespace, number …)
+- what is left until the first non character is an enclitic
+- next character is “n”
+ 
+
+
+***TRAIN improvements***
+
+- add the possibility of passing a folder to the training, containing more than one TEI, to be combined in one training set
