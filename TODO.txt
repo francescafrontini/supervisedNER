@@ -50,6 +50,6 @@ Add each consecutive character until
  
 
 
-***TRAIN improvements***
+***TRAIN improvements******
 
 - add the possibility of passing a folder to the training, containing more than one TEI, to be combined in one training set
