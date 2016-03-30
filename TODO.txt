@@ -52,4 +52,4 @@ Add each consecutive character until
 
 ***TRAIN improvements******
 
-- add the possibility of passing a folder to the training, containing more than one TEI, to be combined in one training set
+- add the possibility of passing a folder to the training, containing more than one TEI, to be combined in one training set - DONE
