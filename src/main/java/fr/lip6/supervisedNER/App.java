@@ -18,7 +18,7 @@ public class App
         	}
         } else {
         	System.out.println("two forms of execution are possible: \n"
-        	+ "1) train dictionary.xml TEIfile-NEannot.xml place|person|organization|all (it outputs a .mod file) \n"
+        	+ "1) train dictionary.xml TEIfile-NEannot.xml|folder place|person|organization|all (it outputs a .mod file) \n"
         	+ "2) tag dictionary.xml .mod newTEIfile-NoNEannot.xml place|person|organization (it outputs a new tei file with NE annotations)");
         }
     }
